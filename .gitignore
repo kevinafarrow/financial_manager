@@ -1,0 +1,31 @@
+# --- sensitive / runtime data: never commit ---
+/data/
+/backups/
+*.env
+.env*
+vault.json
+*.db
+*.db-*
+*.sqlite*
+secrets*
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+
+# node / frontend
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# editors / os
+.DS_Store
+.idea/
+.vscode/

@@ -219,9 +219,9 @@ context trimming: keep system + last N messages, older summarized.
 ## 6. Build phases & status
 
 - [x] Phase 0 — Interview, decisions, this plan
-- [ ] Phase 1 — Repo scaffold: .gitignore, backend/frontend skeletons, deps pinned
-- [ ] Phase 2 — Core substrate: db.py (SQLCipher + migrations), vault.py, config.py; tests
-- [ ] Phase 3 — Auth: users, sessions, login/unlock endpoints, failed-login alerting; tests
+- [x] Phase 1 — Repo scaffold: .gitignore, backend/frontend skeletons, deps pinned
+- [x] Phase 2 — Core substrate: db.py (SQLCipher + migrations), vault.py, config.py; tests
+- [x] Phase 3 — Auth: users, sessions, login/unlock endpoints, failed-login alerting; tests
 - [ ] Phase 4 — Accounts & categories CRUD + seed categories; audit log; tests
 - [ ] Phase 5 — Importers: OFX/QFX + CSV mapping + dedupe + imports API + staleness fields; tests
 - [ ] Phase 6 — Categorization pipeline (normalize, history, rules, bayes, claude fake-able, queue API); tests

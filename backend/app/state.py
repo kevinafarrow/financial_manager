@@ -113,11 +113,18 @@ class AppState:
         from .categorize.claude_cat import ClaudeCategorizer
         from .categorize.pipeline import Categorizer
 
+        from . import transfers
+
         claude = ClaudeCategorizer(self.anthropic_client, self.config.model_categorize)
         self.categorizer = Categorizer(self.db, claude)
         self.categorizer.retrain()
 
         def on_import(tx_ids: list[int]) -> None:
+            # transfers first: a linked pair must never reach categorization
+            try:
+                transfers.find_and_link(self.db, tx_ids)
+            except Exception:
+                log.exception("transfer matching failed")
             try:
                 self.categorizer.categorize_transactions(tx_ids)
             except Exception:

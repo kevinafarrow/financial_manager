@@ -224,7 +224,7 @@ context trimming: keep system + last N messages, older summarized.
 - [x] Phase 3 — Auth: users, sessions, login/unlock endpoints, failed-login alerting; tests
 - [x] Phase 4 — Accounts & categories CRUD + seed categories; audit log; tests
 - [x] Phase 5 — Importers: OFX/QFX + CSV mapping + dedupe + imports API + staleness fields; tests
-- [ ] Phase 6 — Categorization pipeline (normalize, history, rules, bayes, claude fake-able, queue API); tests
+- [x] Phase 6 — Categorization pipeline (normalize, history, rules, bayes, claude fake-able, queue API); tests
 - [ ] Phase 7 — Transfers (matcher, queue, link/unlink API); tests
 - [ ] Phase 8 — Recurring detection + confirm flow + balance-threat alert job; tests
 - [ ] Phase 9 — Search (regex) + transactions API (list/edit/split); tests

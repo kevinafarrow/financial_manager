@@ -26,6 +26,7 @@ class AppState:
         self.secrets: SecretsStore | None = None
         self.alerts: AlertService | None = None
         self.auth: AuthService | None = None
+        self.categorizer = None
         self.scheduler = None  # set by scheduler.start() once unlocked
         self._unlock_lock = threading.Lock()
         # Hooks other modules register; called with no args.
@@ -80,6 +81,7 @@ class AppState:
             self.secrets = None
             self.alerts = None
             self.auth = None
+            self.categorizer = None
             self.vault.lock()
 
     def _wire(self) -> None:
@@ -89,11 +91,39 @@ class AppState:
         self.secrets = SecretsStore(self.db, self.vault)
         self.alerts = AlertService(self.db, self.secrets.get, http_client=self.http_client)
         self.auth = AuthService(self.db, alert_service=self.alerts)
+        self._wire_categorizer()
         for hook in self.on_unlocked_hooks:
             try:
                 hook()
             except Exception:
                 log.exception("on_unlocked hook failed")
+
+    def anthropic_client(self):
+        """Returns an anthropic client using the stored API key, or None."""
+        if self.secrets is None:
+            return None
+        api_key = self.secrets.get("anthropic_api_key")
+        if not api_key:
+            return None
+        import anthropic
+
+        return anthropic.Anthropic(api_key=api_key)
+
+    def _wire_categorizer(self) -> None:
+        from .categorize.claude_cat import ClaudeCategorizer
+        from .categorize.pipeline import Categorizer
+
+        claude = ClaudeCategorizer(self.anthropic_client, self.config.model_categorize)
+        self.categorizer = Categorizer(self.db, claude)
+        self.categorizer.retrain()
+
+        def on_import(tx_ids: list[int]) -> None:
+            try:
+                self.categorizer.categorize_transactions(tx_ids)
+            except Exception:
+                log.exception("categorization pipeline failed")
+
+        self.post_import_hooks.append(on_import)
 
     def data_changed(self) -> None:
         """Called after any data-mutating operation; drives backup debounce."""

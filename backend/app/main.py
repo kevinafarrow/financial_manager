@@ -42,7 +42,7 @@ def create_app(state: AppState | None = None) -> FastAPI:
         return await call_next(request)
 
     from .api import (accounts, auth_routes, categories, imports, queue,
-                      recurring_api, rules, system, transfers_api)
+                      recurring_api, rules, system, transactions, transfers_api)
 
     app.include_router(system.router)
     app.include_router(auth_routes.router)
@@ -53,6 +53,7 @@ def create_app(state: AppState | None = None) -> FastAPI:
     app.include_router(rules.router)
     app.include_router(transfers_api.router)
     app.include_router(recurring_api.router)
+    app.include_router(transactions.router)
 
     if STATIC_DIR.exists():  # serve the built frontend
         app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets"), name="assets")

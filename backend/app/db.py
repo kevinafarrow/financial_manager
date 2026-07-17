@@ -7,10 +7,24 @@ All amounts are stored as integer cents. Dates are ISO-8601 TEXT (UTC).
 from __future__ import annotations
 
 import threading
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable
 
+import regex as regex_lib
 import sqlcipher3
+
+
+@lru_cache(maxsize=256)
+def _compile(pattern: str):
+    return regex_lib.compile(pattern, regex_lib.IGNORECASE)
+
+
+def _regexp(pattern: str, value) -> bool:
+    """Backs SQL `column REGEXP ?` — powered by the `regex` library."""
+    if value is None:
+        return False
+    return _compile(pattern).search(str(value)) is not None
 
 MIGRATIONS: list[str] = [
     # v1 — full initial schema
@@ -245,6 +259,7 @@ class Database:
             raise WrongKey("database key is incorrect") from e
         self._conn.execute("PRAGMA foreign_keys = ON")
         self._conn.execute("PRAGMA journal_mode = WAL")
+        self._conn.create_function("REGEXP", 2, _regexp, deterministic=True)
 
     # -- migrations ----------------------------------------------------------
 

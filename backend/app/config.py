@@ -27,6 +27,9 @@ class Config:
     # since the real token is unreachable inside the locked DB.
     boot_pushover_user: str | None = field(default_factory=lambda: os.environ.get("PUSHOVER_BOOT_USER"))
     boot_pushover_token: str | None = field(default_factory=lambda: os.environ.get("PUSHOVER_BOOT_TOKEN"))
+    # Base URL used in alert links (reachable over your Tailscale/LAN).
+    base_url: str = field(default_factory=lambda: os.environ.get("FM_BASE_URL", "http://localhost:8000"))
+    enable_scheduler: bool = field(default_factory=lambda: os.environ.get("FM_SCHEDULER", "1") != "0")
 
     @property
     def db_path(self) -> Path:

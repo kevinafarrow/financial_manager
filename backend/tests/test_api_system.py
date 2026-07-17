@@ -9,7 +9,8 @@ from tests.conftest import ADMIN, CSRF, PASSPHRASE
 
 
 def fresh_client(tmp_path) -> tuple[TestClient, AppState]:
-    cfg = Config(data_dir=tmp_path / "data", backup_dir=tmp_path / "backups")
+    cfg = Config(data_dir=tmp_path / "data", backup_dir=tmp_path / "backups",
+                 enable_scheduler=False)
     state = AppState(cfg)
     return TestClient(create_app(state)), state
 

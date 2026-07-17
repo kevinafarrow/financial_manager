@@ -27,6 +27,8 @@ class AppState:
         self.alerts: AlertService | None = None
         self.auth: AuthService | None = None
         self.categorizer = None
+        self.receipts = None  # ReceiptService once unlocked
+        self.backups = None  # BackupService once unlocked
         self.scheduler = None  # set by scheduler.start() once unlocked
         self._unlock_lock = threading.Lock()
         # Hooks other modules register; called with no args.
@@ -97,6 +99,10 @@ class AppState:
                 hook()
             except Exception:
                 log.exception("on_unlocked hook failed")
+        if self.config.enable_scheduler:
+            from . import scheduler
+
+            self.scheduler = scheduler.start(self)
 
     def anthropic_client(self):
         """Returns an anthropic client using the stored API key, or None."""

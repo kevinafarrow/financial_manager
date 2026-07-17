@@ -228,7 +228,7 @@ context trimming: keep system + last N messages, older summarized.
 - [x] Phase 7 — Transfers (matcher, queue, link/unlink API); tests
 - [x] Phase 8 — Recurring detection + confirm flow + balance-threat alert job; tests
 - [x] Phase 9 — Search (regex) + transactions API (list/edit/split); tests
-- [ ] Phase 10 — Budgets (draft gen, approve, progress) + savings goals; tests
+- [x] Phase 10 — Budgets (draft gen, approve, progress) + savings goals; tests
 - [ ] Phase 11 — Reports (weekly pulse, monthly) + Pushover alerts + scheduler wiring; tests
 - [ ] Phase 12 — Receipts (IMAP client, intake policy, Claude parse, match/split); tests
 - [ ] Phase 13 — Chat (tool definitions, Opus loop, threads, trimming); tests

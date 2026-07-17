@@ -41,8 +41,9 @@ def create_app(state: AppState | None = None) -> FastAPI:
             return JSONResponse({"detail": "missing X-Requested-With header"}, status_code=403)
         return await call_next(request)
 
-    from .api import (accounts, auth_routes, categories, imports, queue,
-                      recurring_api, rules, system, transactions, transfers_api)
+    from .api import (accounts, auth_routes, budgets_api, categories, imports,
+                      queue, recurring_api, rules, system, transactions,
+                      transfers_api)
 
     app.include_router(system.router)
     app.include_router(auth_routes.router)
@@ -54,6 +55,8 @@ def create_app(state: AppState | None = None) -> FastAPI:
     app.include_router(transfers_api.router)
     app.include_router(recurring_api.router)
     app.include_router(transactions.router)
+    app.include_router(budgets_api.router)
+    app.include_router(budgets_api.goals_router)
 
     if STATIC_DIR.exists():  # serve the built frontend
         app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets"), name="assets")

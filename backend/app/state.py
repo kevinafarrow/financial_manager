@@ -31,6 +31,8 @@ class AppState:
         # Hooks other modules register; called with no args.
         self.on_unlocked_hooks: list = []
         self.on_data_changed_hooks: list = []
+        # Called with the list of newly inserted transaction ids after an import.
+        self.post_import_hooks: list = []
 
     # -- state queries -------------------------------------------------------
 

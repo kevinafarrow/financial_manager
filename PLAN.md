@@ -249,12 +249,18 @@ Environment facts: sandbox has Python 3.13.5 + pip (network OK), Node 22.14.0
 installed at `~/.local/node/bin` (must be on PATH), `sqlcipher3-wheels` works on
 py3.13, no docker daemon here (Kevin runs containers himself), no sudo.
 
-**Known gaps / future work (for the next session, likely on Opus):**
-- `docker build` untested here (no daemon). The Dockerfile mirrors the tested
-  layouts; `main.py:_find_static_dir` handles both repo and container paths,
-  overridable via `FM_STATIC_DIR`.
-- Claude (Anthropic API) and IMAP integrations are exercised only against fakes;
-  first real-world run needs an API key + mailbox and may need prompt tweaks.
+**Known gaps / future work (for the next session, likely on Opus), roughly in
+priority order:**
+- **Second user (Mary): no UI yet.** `AuthService.create_user` and per-user
+  attribution exist and are tested, but Settings has no "add user" form. Either
+  build that (admin-only endpoint + form) or, as a stopgap, insert via a one-off
+  script. This is the top next-work item.
+- **First real-world shakeout.** `docker build` untested here (no daemon in the
+  build sandbox — Kevin's first `docker compose up --build` is the real test).
+  The Dockerfile mirrors the tested layouts; `main.py:_find_static_dir` handles
+  both repo and container paths, overridable via `FM_STATIC_DIR`. Same session
+  should exercise: a real Anthropic API key (categorization + chat + receipt
+  parse prompts were only tested against fakes) and the real IMAP mailbox.
 - Real WF/Citi exports should be run through the importer — bank formats have
   quirks the fixtures may not cover; the CSV `mapping` param is the escape hatch.
 - Passphrase change / DB rekey (PRAGMA rekey) not implemented.

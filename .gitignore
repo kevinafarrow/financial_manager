@@ -7,7 +7,7 @@ vault.json
 *.db
 *.db-*
 *.sqlite*
-secrets*
+/secrets*
 
 # python
 __pycache__/

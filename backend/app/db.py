@@ -293,6 +293,13 @@ class Database:
         with self._lock, self._conn:
             self._conn.executemany(sql, [tuple(p) for p in seq])
 
+    def vacuum_into(self, dest_path: str) -> None:
+        """Writes a compacted, still-encrypted copy of the DB to dest_path.
+        VACUUM cannot run inside a transaction, so this bypasses the usual
+        write wrapper."""
+        with self._lock:
+            self._conn.execute("VACUUM INTO ?", (dest_path,))
+
     def transaction(self):
         """Context manager: `with db.transaction() as conn:` for multi-statement writes."""
         return _Txn(self)

@@ -78,6 +78,9 @@ class AppState:
                 except Exception:
                     pass
                 self.scheduler = None
+            if self.backups is not None:
+                self.backups.stop()
+            self.on_data_changed_hooks.clear()
             if self.db is not None:
                 self.db.close()
             self.db = None
@@ -145,6 +148,13 @@ class AppState:
         from .chat import ChatService
 
         self.chat = ChatService(self.db, self.anthropic_client, self.config.model_chat)
+
+        from .backups import BackupService
+
+        self.backups = BackupService(self.db, self.config.backup_dir,
+                                     self.config.backup_debounce_seconds)
+        if self.config.backup_debounce_seconds > 0:
+            self.on_data_changed_hooks.append(self.backups.notify_data_changed)
 
     def _wire_receipts(self) -> None:
         from . import settings_store

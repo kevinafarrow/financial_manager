@@ -30,6 +30,9 @@ class Config:
     # Base URL used in alert links (reachable over your Tailscale/LAN).
     base_url: str = field(default_factory=lambda: os.environ.get("FM_BASE_URL", "http://localhost:8000"))
     enable_scheduler: bool = field(default_factory=lambda: os.environ.get("FM_SCHEDULER", "1") != "0")
+    # Seconds after the last data change before a backup snapshot fires; 0 disables.
+    backup_debounce_seconds: float = field(
+        default_factory=lambda: float(os.environ.get("FM_BACKUP_DEBOUNCE", "300")))
 
     @property
     def db_path(self) -> Path:

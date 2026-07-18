@@ -37,7 +37,7 @@ class FakeAlerts:
 @pytest.fixture
 def appstate(tmp_path) -> AppState:
     cfg = Config(data_dir=tmp_path / "data", backup_dir=tmp_path / "backups",
-                 enable_scheduler=False)
+                 enable_scheduler=False, backup_debounce_seconds=0)
     state = AppState(cfg)
     state.setup(PASSPHRASE, ADMIN["username"], ADMIN["display_name"], ADMIN["password"])
     state.alerts = FakeAlerts()

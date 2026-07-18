@@ -231,7 +231,7 @@ context trimming: keep system + last N messages, older summarized.
 - [x] Phase 10 — Budgets (draft gen, approve, progress) + savings goals; tests
 - [x] Phase 11 — Reports (weekly pulse, monthly) + Pushover alerts + scheduler wiring; tests
 - [x] Phase 12 — Receipts (IMAP client, intake policy, Claude parse, match/split); tests
-- [ ] Phase 13 — Chat (tool definitions, Opus loop, threads, trimming); tests
+- [x] Phase 13 — Chat (tool definitions, Opus loop, threads, trimming); tests
 - [ ] Phase 14 — Backups (debounced snapshot, retention prune, export endpoint); tests
 - [ ] Phase 15 — Frontend: shell, theme, unlock/login, dashboard
 - [ ] Phase 16 — Frontend: transactions+search, import, review queues

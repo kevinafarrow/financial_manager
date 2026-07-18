@@ -28,6 +28,7 @@ class AppState:
         self.auth: AuthService | None = None
         self.categorizer = None
         self.receipts = None  # ReceiptService once unlocked
+        self.chat = None  # ChatService once unlocked
         self.backups = None  # BackupService once unlocked
         self.scheduler = None  # set by scheduler.start() once unlocked
         self._unlock_lock = threading.Lock()
@@ -85,6 +86,7 @@ class AppState:
             self.auth = None
             self.categorizer = None
             self.receipts = None
+            self.chat = None
             self.backups = None
             self.vault.lock()
 
@@ -140,6 +142,9 @@ class AppState:
 
         self.post_import_hooks.append(on_import)
         self._wire_receipts()
+        from .chat import ChatService
+
+        self.chat = ChatService(self.db, self.anthropic_client, self.config.model_chat)
 
     def _wire_receipts(self) -> None:
         from . import settings_store

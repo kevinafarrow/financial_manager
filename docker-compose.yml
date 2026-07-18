@@ -4,15 +4,16 @@ services:
     container_name: financial-manager
     restart: unless-stopped
     ports:
-      # Bind to a Tailscale/LAN address in production, e.g. "100.x.y.z:8888:8000".
-      - "8888:8000"
+      # Loopback only: Tailscale Serve on the host proxies
+      # https://financial-manager.tuna-scala.ts.net -> 127.0.0.1:8888.
+      - "127.0.0.1:8888:8000"
     volumes:
       - fm-data:/data
       - fm-backups:/backups
       # Or point backups at your NAS/synced folder instead:
       # - /path/to/nas/fm-backups:/backups
     environment:
-      FM_BASE_URL: "http://localhost:8888" # used in Pushover alert links
+      FM_BASE_URL: "https://financial-manager.tuna-scala.ts.net" # used in Pushover alert links
       # Optional: plaintext Pushover pair for the "app restarted, vault locked"
       # boot notice only (the real tokens live encrypted in the DB).
       # PUSHOVER_BOOT_USER: ""

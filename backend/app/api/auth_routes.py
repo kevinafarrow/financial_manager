@@ -26,6 +26,7 @@ def login(body: LoginBody, request: Request, response: Response,
         raise HTTPException(401, "invalid credentials")
     response.set_cookie(
         SESSION_COOKIE, token, httponly=True, samesite="strict",
+        secure=state.config.base_url.startswith("https"),
         max_age=30 * 24 * 3600, path="/",
     )
     return state.auth.get_user_for_token(token)

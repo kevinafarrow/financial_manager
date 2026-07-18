@@ -13,7 +13,7 @@ Design, architecture, and build status: see [PLAN.md](PLAN.md).
 
 ```sh
 docker compose up -d --build
-# open http://localhost:8000
+# open http://localhost:8888
 ```
 
 First run walks you through creating the master passphrase and your login.

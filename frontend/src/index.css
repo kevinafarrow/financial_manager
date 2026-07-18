@@ -117,8 +117,12 @@ a:hover { text-decoration: underline; }
 .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 900px) {
   .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
-  .sidebar { width: 64px; }
+  .sidebar { width: 64px; padding-left: 8px; padding-right: 8px; }
   .sidebar .label, .sidebar .brand span:not(.dot) { display: none; }
+  .sidebar .foot { padding-left: 0; padding-right: 0; align-items: center; }
+  .sidebar .foot .btn { justify-content: center; }
+  /* 16px floor stops iOS Safari from auto-zooming focused inputs */
+  input, select, textarea { font-size: 16px; }
 }
 
 .tile .k { color: var(--ink-2); font-size: 12.5px; font-weight: 500; }

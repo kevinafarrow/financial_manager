@@ -117,11 +117,13 @@ export default function App() {
         ))}
         <div className="foot">
           <button className="btn sm" onClick={toggleTheme}>
-            {theme === 'dark' ? '☀ Light' : '☾ Dark'}
+            <span aria-hidden>{theme === 'dark' ? '☀' : '☾'}</span>
+            <span className="label">{theme === 'dark' ? 'Light' : 'Dark'}</span>
           </button>
-          <div className="small muted">{user?.display_name}</div>
-          <button className="btn sm" onClick={logout}>
-            Sign out
+          <div className="small muted label">{user?.display_name}</div>
+          <button className="btn sm" onClick={logout} title="Sign out">
+            <span aria-hidden>→</span>
+            <span className="label">Sign out</span>
           </button>
         </div>
       </nav>

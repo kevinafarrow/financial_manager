@@ -14,7 +14,25 @@ from .config import Config
 from .state import AppState
 
 MUTATING_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
-STATIC_DIR = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+
+
+def _find_static_dir() -> Path:
+    import os
+
+    override = os.environ.get("FM_STATIC_DIR")
+    if override:
+        return Path(override)
+    here = Path(__file__).resolve()
+    # repo layout: backend/app/main.py → ../../frontend/dist
+    # container layout: /app/app/main.py → /app/frontend/dist
+    for parent_idx in (2, 1):
+        candidate = here.parents[parent_idx] / "frontend" / "dist"
+        if candidate.exists():
+            return candidate
+    return here.parents[2] / "frontend" / "dist"
+
+
+STATIC_DIR = _find_static_dir()
 
 
 def create_app(state: AppState | None = None) -> FastAPI:

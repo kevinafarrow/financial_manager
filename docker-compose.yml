@@ -1,0 +1,23 @@
+services:
+  financial-manager:
+    build: .
+    container_name: financial-manager
+    restart: unless-stopped
+    ports:
+      # Bind to a Tailscale/LAN address in production, e.g. "100.x.y.z:8000:8000".
+      - "8000:8000"
+    volumes:
+      - fm-data:/data
+      - fm-backups:/backups
+      # Or point backups at your NAS/synced folder instead:
+      # - /path/to/nas/fm-backups:/backups
+    environment:
+      FM_BASE_URL: "http://localhost:8000" # used in Pushover alert links
+      # Optional: plaintext Pushover pair for the "app restarted, vault locked"
+      # boot notice only (the real tokens live encrypted in the DB).
+      # PUSHOVER_BOOT_USER: ""
+      # PUSHOVER_BOOT_TOKEN: ""
+
+volumes:
+  fm-data:
+  fm-backups:

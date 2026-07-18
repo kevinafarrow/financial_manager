@@ -236,9 +236,30 @@ context trimming: keep system + last N messages, older summarized.
 - [x] Phase 15 — Frontend: shell, theme, unlock/login, dashboard
 - [x] Phase 16 — Frontend: transactions+search, import, review queues
 - [x] Phase 17 — Frontend: recurring, budget, reports, chat, settings
-- [ ] Phase 18 — Dockerfile + compose + README ops docs; final integration pass
+- [x] Phase 18 — Dockerfile + compose + README ops docs; final integration pass
 
-**Status note (update each session):** Phase 0 complete (2026-07-17). Build starting.
-Environment facts: sandbox has Python 3.13.5 + pip (network OK), Node 22.14.0 installed
-at `~/.local/node/bin` (must be on PATH), `sqlcipher3-wheels` confirmed working on
+**Status note (update each session):** All 18 phases complete (2026-07-17).
+Verified: 182 backend tests green (`cd backend && pytest`), frontend `npm test`
+(7) + `npm run build` green, and a live end-to-end pass against the real server
+(setup → login → account → OFX import → queue → categorize → regex search →
+SPA serving → CSRF 403 → lock 423 → unlock persistence → debounced encrypted
+backup → on-disk files verified encrypted).
+
+Environment facts: sandbox has Python 3.13.5 + pip (network OK), Node 22.14.0
+installed at `~/.local/node/bin` (must be on PATH), `sqlcipher3-wheels` works on
 py3.13, no docker daemon here (Kevin runs containers himself), no sudo.
+
+**Known gaps / future work (for the next session, likely on Opus):**
+- `docker build` untested here (no daemon). The Dockerfile mirrors the tested
+  layouts; `main.py:_find_static_dir` handles both repo and container paths,
+  overridable via `FM_STATIC_DIR`.
+- Claude (Anthropic API) and IMAP integrations are exercised only against fakes;
+  first real-world run needs an API key + mailbox and may need prompt tweaks.
+- Real WF/Citi exports should be run through the importer — bank formats have
+  quirks the fixtures may not cover; the CSV `mapping` param is the escape hatch.
+- Passphrase change / DB rekey (PRAGMA rekey) not implemented.
+- Chat context uses simple truncation (last 40 turns), not summarization.
+- Frontend deviates from the interview's "Tailwind" note: hand-rolled CSS
+  design system with the validated dataviz palette (same dark/light goals,
+  fewer deps). Charts are CSS bars; recharts was removed as unused.
+- No frontend component tests (vitest covers shared utils; `tsc` is the gate).

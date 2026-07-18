@@ -84,6 +84,8 @@ class AppState:
             self.alerts = None
             self.auth = None
             self.categorizer = None
+            self.receipts = None
+            self.backups = None
             self.vault.lock()
 
     def _wire(self) -> None:
@@ -137,6 +139,22 @@ class AppState:
                 log.exception("categorization pipeline failed")
 
         self.post_import_hooks.append(on_import)
+        self._wire_receipts()
+
+    def _wire_receipts(self) -> None:
+        from . import settings_store
+        from .receipts.imap_client import ImapFetcher
+        from .receipts.parse import ClaudeReceiptParser
+        from .receipts.service import ReceiptService
+
+        parser = ClaudeReceiptParser(self.anthropic_client, self.config.model_categorize)
+        fetcher = None
+        imap = settings_store.get(self.db, "imap", {})
+        if imap.get("host") and imap.get("username"):
+            fetcher = ImapFetcher(
+                imap["host"], int(imap.get("port", 993)), imap["username"],
+                lambda: self.secrets.get("imap_password") if self.secrets else None)
+        self.receipts = ReceiptService(self.db, parser, fetcher, self.categorizer)
 
     def data_changed(self) -> None:
         """Called after any data-mutating operation; drives backup debounce."""

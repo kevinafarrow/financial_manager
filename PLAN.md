@@ -233,9 +233,9 @@ context trimming: keep system + last N messages, older summarized.
 - [x] Phase 12 — Receipts (IMAP client, intake policy, Claude parse, match/split); tests
 - [x] Phase 13 — Chat (tool definitions, Opus loop, threads, trimming); tests
 - [x] Phase 14 — Backups (debounced snapshot, retention prune, export endpoint); tests
-- [ ] Phase 15 — Frontend: shell, theme, unlock/login, dashboard
-- [ ] Phase 16 — Frontend: transactions+search, import, review queues
-- [ ] Phase 17 — Frontend: recurring, budget, reports, chat, settings
+- [x] Phase 15 — Frontend: shell, theme, unlock/login, dashboard
+- [x] Phase 16 — Frontend: transactions+search, import, review queues
+- [x] Phase 17 — Frontend: recurring, budget, reports, chat, settings
 - [ ] Phase 18 — Dockerfile + compose + README ops docs; final integration pass
 
 **Status note (update each session):** Phase 0 complete (2026-07-17). Build starting.
